@@ -14,16 +14,6 @@
 <body>
 
     <!-- =========================================
-         MÀN HÌNH INTRO VIDEO LAMBORGHINI
-    ========================================== -->
-    <div id="intro-screen">
-        <video id="intro-video" muted playsinline autoplay>
-            <source src="video/intro.mp4" type="video/mp4">
-        </video>
-        <button id="skip-btn" class="btn-luxury skip-btn">BỎ QUA INTRO</button>
-    </div>
-
-    <!-- =========================================
          HEADER / NAVBAR
     ========================================== -->
     <header class="navbar">
@@ -85,7 +75,7 @@
 
         function handleLogout(e) {
             e.preventDefault();
-            if (confirm('Bạn có chắc chắn muốn đăng xuất khỏi tài khoản ?')) {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất khỏi tài khoản VIP?')) {
                 localStorage.removeItem('lambo_logged_in');
                 window.location.reload();
             }
