@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamborghini | VIP Membership</title>
+    
+    <!-- Font chữ sang trọng -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Link file CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <a href="index.html" class="logo">LAMBORGHINI</a>
+        <nav>
+            <a href="index.html#models">Models</a>
+            <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            <a href="auth.html" class="active">ACCOUNT</a>
+        </nav>
+    </header>
+
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login-btn" onclick="switchAuthTab('login')">ĐĂNG NHẬP VIP</button>
+                <button class="auth-tab" id="tab-register-btn" onclick="switchAuthTab('register')">ĐĂNG KÝ HỘI VIÊN</button>
+            </div>
+
+            <!-- FORM ĐĂNG NHẬP -->
+            <form id="form-login" class="auth-form" onsubmit="handleLoginSubmit(event)">
+                <p class="auth-subtitle">CHÀO MỪNG BẠN TRỞ LẠI VỚI CLB LAMBORGHINI VIP</p>
+                <input type="text" id="login-username" placeholder="TÊN TÀI KHOẢN HOẶC EMAIL" required class="input-luxury">
+                <input type="password" id="login-password" placeholder="MẬT KHẨU" required class="input-luxury">
+                
+                <button type="submit" class="btn-luxury btn-full" style="margin-top: 25px;">
+                    ĐĂNG NHẬP TÀI KHOẢN VIP
+                </button>
+            </form>
+
+            <!-- FORM ĐĂNG KÝ -->
+            <form id="form-register" class="auth-form hidden" onsubmit="handleRegisterSubmit(event)">
+                <p class="auth-subtitle">GIA NHẬP CỘNG ĐỒNG CHỦ SỞ HỮU LAMBORGHINI TOÀN CẦU</p>
+                <input type="text" id="reg-username" placeholder="HỌ VÀ TÊN VIP" required class="input-luxury">
+                <input type="email" id="reg-email" placeholder="EMAIL DÀNH CHO HỘI VIÊN" required class="input-luxury">
+                <input type="password" id="reg-password" placeholder="MẬT KHẨU BẢO MẬT" required class="input-luxury">
+                
+                <button type="submit" class="btn-luxury btn-full" style="margin-top: 25px;">
+                    TẠO TÀI KHOẢN VIP MEMBER
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-logo">LAMBORGHINI VIP CLUB</p>
+            <p class="copyright">© 2026 Automobili Lamborghini S.p.A. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JS Libraries -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <script src="js/main.js"></script>
+    
+    <script>
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('form-login');
+            const registerForm = document.getElementById('form-register');
+            const loginTab = document.getElementById('tab-login-btn');
+            const registerTab = document.getElementById('tab-register-btn');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+                loginTab.classList.remove('active');
+                registerTab.classList.add('active');
+            }
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const userData = { username: username, tier: 'VIP Gold' };
+            
+            localStorage.setItem('lambo_logged_in', JSON.stringify(userData));
+            showNotification(`Xin chào VIP ${username.toUpperCase()}, Đăng nhập thành công!`);
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const userData = { username: username, email: email, tier: 'VIP Gold' };
+            
+            localStorage.setItem('lambo_logged_in', JSON.stringify(userData));
+            showNotification(`Chúc mừng ${username.toUpperCase()} đã trở thành Hội viên VIP!`);
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

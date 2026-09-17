@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamborghini | Giỏ Hàng VIP</title>
+    
+    <!-- Font chữ sang trọng -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Link file CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="cart-page">
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <a href="index.html" class="logo">LAMBORGHINI</a>
+        <nav>
+            <a href="index.html#models">Models</a>
+            <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            <span id="user-nav">
+                <a href="auth.html">ACCOUNT</a>
+            </span>
+        </nav>
+    </header>
+
+    <!-- TRANG GIỎ HÀNG -->
+    <main class="cart-wrapper">
+        <h1 class="cart-title">GIỎ HÀNG SỞ HỮU VIP</h1>
+
+        <div id="cart-items-list" class="cart-items-list">
+            <!-- Render động danh sách sản phẩm trong giỏ hàng -->
+        </div>
+
+        <div id="cart-summary-box" class="cart-summary">
+            <div class="total-line">
+                <span>TỔNG GIÁ TRỊ DỰ KIẾN:</span>
+                <span id="cart-total-price" style="color: #d4af37;">$0</span>
+            </div>
+            
+            <form id="checkout-form" onsubmit="handleVIPCheckout(event)">
+                <div class="form-row">
+                    <input type="text" id="cust-name" placeholder="HỌ VÀ TÊN CHỦ SỞ HỮU VIP" required class="input-luxury">
+                    <input type="email" id="cust-email" placeholder="EMAIL LIÊN HỆ VIP" required class="input-luxury">
+                </div>
+                <div class="form-row">
+                    <input type="tel" id="cust-phone" placeholder="SỐ ĐIỆN THOẠI UỶ QUYỀN" required class="input-luxury">
+                    <select id="cust-showroom" class="input-luxury">
+                        <option value="HN">SHOWROOM LAMBORGHINI HÀ NỘI</option>
+                        <option value="HCM">SHOWROOM LAMBORGHINI TP. HỒ CHÍ MINH</option>
+                        <option value="SGP">SHOWROOM LAMBORGHINI SINGAPORE</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-luxury btn-full" style="margin-top: 30px;">
+                    GỬI YÊU CẦU ĐẶT MUA VIP
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Modal xác nhận Đặt hàng thành công -->
+    <div id="checkout-modal" class="modal-overlay">
+        <div class="modal-card">
+            <span class="modal-badge-vip">CONGRATULATIONS</span>
+            <h2>XÁC NHẬN YÊU CẦU THÀNH CÔNG!</h2>
+            <p>Cảm ơn quý khách <strong id="modal-cust-name" style="color: #d4af37;"></strong> đã đặt quyền ưu tiên sở hữu siêu xe Lamborghini.</p>
+            <p class="modal-desc">Đại diện cố vấn Lamborghini VIP Concierge sẽ liên hệ hỗ trợ trong vòng 15 phút.</p>
+            <button class="btn-luxury" onclick="closeCheckoutModal()">HOÀN TẤT & TRỞ VỀ TRANG CHỦ</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-logo">LAMBORGHINI VIP CLUB</p>
+            <p class="copyright">© 2026 Automobili Lamborghini S.p.A. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JS Libraries -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <script src="js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCartPage();
+
+            // Tự động điền thông tin nếu đã đăng nhập VIP
+            const currentUser = JSON.parse(localStorage.getItem('lambo_logged_in'));
+            if (currentUser) {
+                if (currentUser.username) {
+                    document.getElementById('cust-name').value = currentUser.username;
+                }
+                if (currentUser.email) {
+                    document.getElementById('cust-email').value = currentUser.email;
+                }
+
+                const userNav = document.getElementById('user-nav');
+                userNav.innerHTML = `
+                    <span style="color: #d4af37; margin-right: 12px; font-size: 13px; font-weight: 600;">VIP: ${currentUser.username.toUpperCase()}</span>
+                    <a href="#" style="color: #888; font-size: 12px;" onclick="handleLogout(event)">LOGOUT</a>
+                `;
+            }
+        });
+
+        function renderCartPage() {
+            const cart = getCart();
+            const listEl = document.getElementById('cart-items-list');
+            const summaryBox = document.getElementById('cart-summary-box');
+
+            if (cart.length === 0) {
+                listEl.innerHTML = `
+                    <div class="empty-cart">
+                        <p style="font-size: 20px; letter-spacing: 3px; margin-bottom: 20px;">GIỎ HÀNG VIP CỦA BẠN ĐANG TRỐNG</p>
+                        <a href="index.html#models" class="btn-luxury" style="display: inline-block; text-decoration: none;">KHÁM PHÁ CÁC MẪU XE</a>
+                    </div>
+                `;
+                if (summaryBox) summaryBox.style.display = 'none';
+                return;
+            }
+
+            if (summaryBox) summaryBox.style.display = 'block';
+
+            let total = 0;
+            listEl.innerHTML = cart.map(item => {
+                const itemTotal = (item.priceNum || 0) * (item.quantity || 1);
+                total += itemTotal;
+                return `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h3>${item.name}</h3>
+                            <p>${item.price} x ${item.quantity || 1}</p>
+                        </div>
+                        <div class="cart-item-action">
+                            <span style="color: #d4af37; font-size: 18px; margin-right: 25px;">$${itemTotal.toLocaleString()}</span>
+                            <button class="btn-remove" onclick="removeFromCart('${item.id}')">XÓA</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('cart-total-price').textContent = `$${total.toLocaleString()}`;
+        }
+
+        function handleVIPCheckout(e) {
+            e.preventDefault();
+            const name = document.getElementById('cust-name').value;
+            document.getElementById('modal-cust-name').textContent = name.toUpperCase();
+            
+            // Xóa giỏ hàng sau khi đặt mua thành công
+            localStorage.removeItem('lambo_cart');
+            initCartCount();
+
+            document.getElementById('checkout-modal').classList.add('show');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.remove('show');
+            window.location.href = 'index.html';
+        }
+
+        function handleLogout(e) {
+            e.preventDefault();
+            if (confirm('Bạn có chắc chắn muốn đăng xuất khỏi tài khoản VIP?')) {
+                localStorage.removeItem('lambo_logged_in');
+                window.location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

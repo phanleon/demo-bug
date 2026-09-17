@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamborghini | Detailed Experience</title>
+    
+    <!-- Font chữ sang trọng -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Link file CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <a href="index.html" class="logo">LAMBORGHINI</a>
+        <nav>
+            <a href="index.html#models">Models</a>
+            <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            <span id="user-nav">
+                <a href="auth.html">ACCOUNT</a>
+            </span>
+        </nav>
+    </header>
+
+    <!-- TRANG CHI TIẾT SẢN PHẨM -->
+    <main class="detail-section">
+        <div class="detail-image" id="detail-image-box">
+            <div class="car-preview-stage">
+                <img id="car-detail-img" src="" alt="Lamborghini Car">
+                <div id="color-overlay" class="color-overlay"></div>
+            </div>
+            <div class="color-selector">
+                <span class="color-label">MÀU SƠN NGOẠI THẤT:</span>
+                <div class="color-dots" id="color-dots"></div>
+            </div>
+        </div>
+
+        <div class="detail-info">
+            <p class="section-eyebrow" id="car-detail-category">V12 HYPERCAR</p>
+            <h1 class="detail-title" id="car-detail-title">LOADING...</h1>
+            <p class="detail-price" id="car-detail-price">$0</p>
+            <p class="detail-description" id="car-detail-desc"></p>
+
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <span class="spec-label">TỐC ĐỘ TỐI ĐA</span>
+                    <span class="spec-value" id="spec-speed">-</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">TĂNG TỐC (0-100 KM/H)</span>
+                    <span class="spec-value" id="spec-accel">-</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">CÔNG SUẤT ĐỘNG CƠ</span>
+                    <span class="spec-value" id="spec-power">-</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">LOẠI ĐỘNG CƠ</span>
+                    <span class="spec-value" id="spec-engine">-</span>
+                </div>
+            </div>
+
+            <div class="detail-actions">
+                <button class="btn-luxury btn-full" id="btn-add-cart">THÊM VÀO GIỎ HÀNG VIP</button>
+                <button class="btn-luxury btn-sound" onclick="playEngineRev()">🔊 NGHE TIẾNG ĐỘNG CƠ V12</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-logo">LAMBORGHINI VIP CLUB</p>
+            <p class="copyright">© 2026 Automobili Lamborghini S.p.A. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JS Libraries -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <script src="js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const carId = urlParams.get('id') || 'aventador-svj';
+            const car = LAMBO_MODELS.find(item => item.id === carId) || LAMBO_MODELS[0];
+
+            document.title = `${car.name} | Lamborghini Detail`;
+            document.getElementById('car-detail-title').textContent = car.name;
+            document.getElementById('car-detail-category').textContent = car.category;
+            document.getElementById('car-detail-price').textContent = car.price;
+            document.getElementById('car-detail-desc').textContent = car.description;
+            document.getElementById('car-detail-img').src = car.image;
+
+            document.getElementById('spec-speed').textContent = car.specs.speed;
+            document.getElementById('spec-accel').textContent = car.specs.accel;
+            document.getElementById('spec-power').textContent = car.specs.power;
+            document.getElementById('spec-engine').textContent = car.specs.engine;
+
+            // Nút bấm thêm vào giỏ hàng
+            const addBtn = document.getElementById('btn-add-cart');
+            addBtn.onclick = (e) => addToCart(car.id, e);
+
+            // Bảng màu sơn ngoại thất
+            const colorContainer = document.getElementById('color-dots');
+            if (car.colors && car.colors.length) {
+                colorContainer.innerHTML = car.colors.map((color, index) => `
+                    <button class="color-dot ${index === 0 ? 'active' : ''}" style="background-color: ${color};" onclick="changeCarColor('${color}', this)"></button>
+                `).join('');
+            }
+
+            // User navbar greeting
+            const userNav = document.getElementById('user-nav');
+            const currentUser = JSON.parse(localStorage.getItem('lambo_logged_in'));
+            if (currentUser && currentUser.username) {
+                userNav.innerHTML = `
+                    <span style="color: #d4af37; margin-right: 12px; font-size: 13px; font-weight: 600;">VIP: ${currentUser.username.toUpperCase()}</span>
+                    <a href="#" style="color: #888; font-size: 12px;" onclick="handleLogout(event)">LOGOUT</a>
+                `;
+            }
+        });
+
+        function changeCarColor(color, btn) {
+            document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+            btn.classList.add('active');
+            const overlay = document.getElementById('color-overlay');
+            overlay.style.backgroundColor = color;
+            overlay.style.opacity = '0.15';
+        }
+
+        function handleLogout(e) {
+            e.preventDefault();
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                localStorage.removeItem('lambo_logged_in');
+                window.location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
