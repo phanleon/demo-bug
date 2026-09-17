@@ -6,7 +6,7 @@
     <title>Lamborghini | Luxury Cars</title>
     
     <!-- Font chữ sang trọng -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700&display=swap" rel="stylesheet">
     
     <!-- Link file CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -27,7 +27,7 @@
          HEADER / NAVBAR
     ========================================== -->
     <header class="navbar">
-        <div class="logo">LAMBORGHINI</div>
+        <a href="index.html" class="logo">LAMBORGHINI</a>
         <nav>
             <a href="#models" id="models-link">Models</a>
             <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
@@ -48,18 +48,32 @@
         <div class="hero-content">
             <h1 class="title">AVENTADOR SVJ</h1>
             <p class="subtitle">REAL EMOTIONS SHAPE THE FUTURE</p>
-            <button class="btn-luxury" onclick="window.location.href='detail.html'">KHÁM PHÁ NGAY</button>
+            <div class="hero-btns">
+                <button class="btn-luxury" onclick="window.location.href='detail.html?id=aventador-svj'">KHÁM PHÁ NGAY</button>
+                <button class="btn-luxury btn-sound" onclick="playEngineRev()">🔊 REV V12 SOUND</button>
+            </div>
         </div>
     </section>
 
+    <!-- =========================================
+         MODELS SECTION (Danh sách siêu xe)
+    ========================================== -->
     <section id="models" class="models-section">
         <div class="models-heading">
             <p class="section-eyebrow">LAMBORGHINI COLLECTION</p>
             <h2>CÁC DÒNG XE</h2>
-            <p class="models-description">Khám phá những mẫu xe nổi bật của Lamborghini.</p>
+            <p class="models-description">Khám phá những mẫu siêu xe huyền thoại đỉnh cao công nghệ của Lamborghini.</p>
         </div>
         <div id="models-grid" class="models-grid"></div>
     </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-logo">LAMBORGHINI VIP CLUB</p>
+            <p class="copyright">© 2026 Automobili Lamborghini S.p.A. All rights reserved.</p>
+        </div>
+    </footer>
 
     <!-- Các thư viện JS tạo hiệu ứng -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
