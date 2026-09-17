@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lamborghini | Luxury Cars</title>
-
+    
     <!-- Font chữ sang trọng -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap" rel="stylesheet">
-
+    
     <!-- Link file CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
 
     <!-- =========================================
          HEADER / NAVBAR
@@ -35,9 +32,9 @@
     ========================================== -->
     <section class="hero">
         <div class="hero-bg">
-            <img src="https://www.google.com/search?sca_esv=8f55d1c39308862b&rlz=1C1GCEA_enVN1223VN1223&sxsrf=APpeQntyxnD9lDcKVqzRus6I5F4VZ1Vq2g:1789644624138&udm=2&fbs=ABfTbFW4UnGvBVgqDYjq_ksvF_WztxwCQti2VZqR0uhJaqzr6F6RVr2B1AE7DCcgDvmM1Urf3XQ4bAHPUbLV1kjwZ2sla7Ig2Ih9TsN2CF0bHTbpFmwvSOwmE8X_y-JA_96Chm9_cCSF5mHAsWQ86z_iUFzWUtYC70kPcMN4TwmDixWg84HIPasd0x3PlJ-IiZhIpVfogNyZbp1jhLy2oHFyjNQCo1gCvGl--6Qojqdg5aFFxwj9WegGirYblD2bmkNpsAFgwwBA&q=xe&sa=X&ved=2ahUKEwj-2OHgwfWWAxVY4TgGHZUNJHAQtKgLegQIFxAB&biw=1536&bih=674&dpr=1.25#sv=CAMSURoyKhBlLWs3OFg4U2p6Rnk2NmtNMg5rNzhYOFNqekZ5NjZrTToOU0RYNnVRVGFDSnFfek0gBCoXCgFzEhBlLWs3OFg4U2p6Rnk2NmtNGAEwARgHIMPv8YEFSggQARgBIAEoAQ" alt="Lambo Background">
+            <img src="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=2071" alt="Lambo Background">
         </div>
-
+        
         <div class="hero-content">
             <h1 class="title">AVENTADOR SVJ</h1>
             <p class="subtitle">REAL EMOTIONS SHAPE THE FUTURE</p>
@@ -50,8 +47,6 @@
             <p class="section-eyebrow">LAMBORGHINI COLLECTION</p>
             <h2>CÁC DÒNG XE</h2>
             <p class="models-description">Khám phá những mẫu xe nổi bật của Lamborghini.</p>
-            <p class="models-description"> Audi RS7</p>
-            <p>DuongDinhThuan</p>
         </div>
         <div id="models-grid" class="models-grid"></div>
     </section>
@@ -59,7 +54,7 @@
     <!-- Các thư viện JS tạo hiệu ứng -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
+    
     <script src="js/main.js"></script>
 
     <!-- Script tự động hiển thị tên tài khoản VIP & Đăng xuất -->
@@ -70,7 +65,7 @@
 
             if (currentUser && currentUser.username) {
                 userNav.innerHTML = `
-                    <span style="color: #d4af37; margin-right: 20px; font-size: 5px; letter-spacing: 5px; font-weight: 1000;">
+                    <span style="color: #d4af37; margin-right: 12px; font-size: 13px; letter-spacing: 1px; font-weight: 600;">
                         VIP: ${currentUser.username.toUpperCase()}
                     </span>
                     <a href="#" style="color: #888; text-decoration: none; font-size: 12px; letter-spacing: 1px; transition: color 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#888'" onclick="handleLogout(event)">LOGOUT</a>
@@ -80,14 +75,11 @@
 
         function handleLogout(e) {
             e.preventDefault();
-            if (confirm('Bạn có chắc chắn muốn đăng xuất khỏi tài khoản ?')) {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất khỏi tài khoản VIP?')) {
                 localStorage.removeItem('lambo_logged_in');
                 window.location.reload();
             }
         }
     </script>
 </body>
-
 </html>
-
-<!-- Hello tôi tên Minh -->
